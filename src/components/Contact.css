@@ -32,46 +32,44 @@
       right: 10px;
     }
 
-    .contact-info {
+    .contact-form {
       padding: 20px;
       max-width: 600px;
       margin: 0 auto;
+    }
+
+    .contact-form p {
+      margin-bottom: 20px;
       color: #ffffff;
+    }
+
+    .contact-form input,
+    .contact-form textarea {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #555;
+      border-radius: 4px;
+      background-color: #333;
+      color: #ffffff;
+      box-sizing: border-box;
+    }
+
+    .contact-form textarea {
+      height: 150px;
+    }
+
+    .contact-form button {
+      background-color: #4caf50;
+      color: white;
+      border: none;
+      padding: 10px 20px;
       text-align: center;
-    }
-
-    .contact-info a {
-      color: #2196F3;
-    }
-
-    .content-header {
-      position: sticky;
-      top: 0;
-      background-color: #141414;
-      z-index: 999;
-      padding-bottom: 20px;
-    }
-
-    .app-footer {
-      background-color: #1c1c1c;
-      color: #ffffff;
-      text-align: center;
-      padding: 20px;
-      margin-top: 20px;
-      font-size: 12px;
-    }
-
-    .footer-links {
-      display: flex;
-      justify-content: center;
-      margin-top: 10px;
-      flex-wrap: wrap;
-    }
-
-    .footer-links a {
-      color: #ffffff;
       text-decoration: none;
-      margin: 0 10px;
+      display: inline-block;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 4px;
     }
 
     @media (min-width: 769px) {
@@ -81,11 +79,5 @@
 
       .content-area.sidebar-open {
         margin-left: 250px;
-      }
-      .footer-links {
-        flex-direction: row;
-      }
-      .footer-links a {
-        margin: 0 10px;
       }
     }

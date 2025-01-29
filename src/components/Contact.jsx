@@ -1,20 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
     import Sidebar from './Sidebar';
     import './Contact.css';
 
     function Contact() {
       const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-
-      useEffect(() => {
-        const handleResize = () => {
-          setIsSidebarOpen(window.innerWidth >= 769);
-        };
-
-        handleResize();
-        window.addEventListener('resize', handleResize);
-
-        return () => window.removeEventListener('resize', handleResize);
-      }, []);
 
       const toggleSidebar = () => {
         setIsSidebarOpen(!isSidebarOpen);
@@ -26,18 +15,22 @@ import React, { useState, useEffect } from 'react';
 
       return (
         <div className="app-container">
-          {!isSidebarOpen && (
-            <button className="burger-icon" onClick={toggleSidebar}>
-              ☰
-            </button>
-          )}
+          <button className={`burger-icon ${isSidebarOpen ? 'close' : ''}`} onClick={toggleSidebar}>
+            {isSidebarOpen ? '✕' : '☰'}
+          </button>
           <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} setFilter={setFilter} />
           <div className={`content-area ${isSidebarOpen ? 'sidebar-open' : ''}`}>
             <div className="content-header">
               <h1>Contact Us</h1>
             </div>
-            <div className="contact-info">
-              <p>If you have any questions, please send an email to <a href="mailto:contact@bjjhorizons.com">contact@bjjhorizons.com</a></p>
+            <div className="contact-form">
+              <p>Please use the form below to contact us:</p>
+              <form>
+                <input type="text" placeholder="Your Name" />
+                <input type="email" placeholder="Your Email" />
+                <textarea placeholder="Your Message"></textarea>
+                <button type="submit">Send Message</button>
+              </form>
             </div>
           </div>
           <footer className="app-footer">
