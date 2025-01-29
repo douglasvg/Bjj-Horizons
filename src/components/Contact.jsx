@@ -4,6 +4,10 @@ import React, { useState } from 'react';
 
     function Contact() {
       const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+      const [name, setName] = useState('');
+      const [email, setEmail] = useState('');
+      const [message, setMessage] = useState('');
+      const [formStatus, setFormStatus] = useState('');
 
       const toggleSidebar = () => {
         setIsSidebarOpen(!isSidebarOpen);
@@ -11,6 +15,35 @@ import React, { useState } from 'react';
 
       const setFilter = () => {
         // Dummy function to prevent errors
+      };
+
+      const handleSubmit = async (e) => {
+        e.preventDefault();
+        setFormStatus('Sending...');
+
+        try {
+          const response = await fetch('/.netlify/functions/contact-form', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ name, email, message }),
+          });
+
+          if (response.ok) {
+            setFormStatus('Message sent successfully!');
+            setName('');
+            setEmail('');
+            setMessage('');
+          } else {
+            const errorData = await response.json();
+            console.error('Failed to send email:', errorData);
+            setFormStatus('Failed to send message. Please try again.');
+          }
+        } catch (error) {
+          console.error('Error sending email:', error);
+          setFormStatus('Failed to send message. Please try again.');
+        }
       };
 
       return (
@@ -25,11 +58,12 @@ import React, { useState } from 'react';
             </div>
             <div className="contact-form">
               <p>Please use the form below to contact us:</p>
-              <form>
-                <input type="text" placeholder="Your Name" />
-                <input type="email" placeholder="Your Email" />
-                <textarea placeholder="Your Message"></textarea>
+              <form onSubmit={handleSubmit}>
+                <input type="text" placeholder="Your Name" value={name} onChange={(e) => setName(e.target.value)} required />
+                <input type="email" placeholder="Your Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+                <textarea placeholder="Your Message" value={message} onChange={(e) => setMessage(e.target.value)} required></textarea>
                 <button type="submit">Send Message</button>
+                {formStatus && <p>{formStatus}</p>}
               </form>
             </div>
           </div>
