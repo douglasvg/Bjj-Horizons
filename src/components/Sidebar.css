@@ -1,0 +1,122 @@
+.sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 250px;
+      background-color: #1c1c1c;
+      color: #ffffff;
+      transition: transform 0.3s ease;
+      transform: translateX(-100%);
+      z-index: 1000;
+      overflow-y: auto;
+    }
+
+    .sidebar.open {
+      transform: translateX(0);
+    }
+
+    .sidebar-header {
+      padding: 20px;
+      border-bottom: 1px solid #333;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .sidebar-title {
+      margin: 0;
+      font-size: 1.5em;
+    }
+
+    .close-sidebar-button {
+      font-size: 1.5em;
+      background: none;
+      border: none;
+      color: #ffffff;
+      cursor: pointer;
+      padding: 0;
+    }
+
+    .sidebar-menu {
+      padding: 20px;
+    }
+
+    .sidebar-menu ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    .sidebar-links {
+      list-style-type: none;
+      padding: 0;
+      margin-bottom: 20px;
+    }
+
+    .sidebar-links li {
+      margin-bottom: 5px;
+    }
+
+    .sidebar-links a {
+      color: #ffffff;
+      text-decoration: none;
+      display: block;
+      padding: 5px 0;
+      transition: background-color 0.3s;
+      font-size: 16px;
+    }
+
+    .sidebar-links a:hover {
+      background-color: #333;
+    }
+
+    .sidebar-separator {
+      border: none;
+      border-top: 1px solid #333;
+      margin: 10px 0;
+    }
+
+    .category {
+      margin-bottom: 10px;
+    }
+
+    .category-title {
+      font-weight: bold;
+      margin-bottom: 5px;
+      cursor: pointer;
+      padding: 5px 0;
+      transition: background-color 0.3s;
+      font-size: 16px;
+    }
+
+    .category-title:hover,
+    .category-title.active {
+      background-color: #333;
+    }
+
+    .subcategories {
+      margin-left: 10px;
+      padding: 0;
+    }
+
+    .subcategories li {
+      margin: 5px 0;
+    }
+
+    .subcategories a {
+      color: #ffffff;
+      text-decoration: none;
+      display: block;
+      padding: 5px 0;
+      transition: background-color 0.3s;
+    }
+
+    .subcategories a:hover {
+      background-color: #333;
+    }
+
+    @media (max-width: 768px) {
+      .sidebar {
+        width: 200px;
+      }
+    }

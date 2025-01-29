@@ -1,0 +1,20 @@
+{
+      "name": "bjj-platform",
+      "version": "1.0.0",
+      "description": "A platform for Brazilian Jiu-Jitsu tutorials and community discussions.",
+      "main": "server.js",
+      "scripts": {
+        "dev": "vite",
+        "start": "node server.js"
+      },
+      "dependencies": {
+        "express": "^4.18.2",
+        "cors": "^2.8.5"
+      },
+      "devDependencies": {
+        "@vitejs/plugin-react": "^3.1.0",
+        "vite": "^4.2.0",
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0"
+      }
+    }

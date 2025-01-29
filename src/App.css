@@ -1,0 +1,104 @@
+.app-container {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .content-area {
+      flex: 1;
+      margin-left: 0;
+      transition: margin-left 0.3s ease;
+    }
+
+    .content-area.sidebar-open {
+      margin-left: 250px;
+    }
+
+    .burger-icon {
+      font-size: 2em;
+      background: none;
+      border: none;
+      color: #ffffff;
+      cursor: pointer;
+      padding: 10px;
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      z-index: 1001;
+    }
+
+    .content-header {
+      position: sticky;
+      top: 0;
+      background-color: #141414;
+      z-index: 999;
+      padding-bottom: 20px;
+    }
+
+    .toggle-and-add-container {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding: 10px;
+      margin-bottom: 20px;
+    }
+
+    .add-video-button {
+      background-color: #4caf50;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      margin-left: 10px;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+
+    .search-bar {
+      padding: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #555;
+      border-radius: 4px;
+      background-color: #333;
+      color: #ffffff;
+      width: calc(100% - 40px);
+      max-width: none;
+      margin-left: 20px;
+      margin-right: 20px;
+      box-sizing: border-box;
+    }
+
+    .app-footer {
+      background-color: #1c1c1c;
+      color: #ffffff;
+      text-align: center;
+      padding: 20px;
+      margin-top: 20px;
+      font-size: 12px;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+
+    .footer-links a {
+      color: #ffffff;
+      text-decoration: none;
+      margin: 0 10px;
+    }
+
+    @media (max-width: 768px) {
+      .footer-links {
+        flex-direction: column;
+        align-items: center;
+      }
+      .footer-links a {
+        margin: 5px 0;
+      }
+    }
