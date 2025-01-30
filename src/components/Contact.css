@@ -72,6 +72,12 @@
       border-radius: 4px;
     }
 
+    .contact-email-message {
+      text-align: center;
+      margin-top: 20px;
+      color: #ffffff;
+    }
+
     @media (min-width: 769px) {
       .content-area {
         margin-left: 0;

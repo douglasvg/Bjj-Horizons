@@ -9,6 +9,12 @@ const mailgun = require('mailgun-js')({
       }
 
       try {
+        console.log("Environment Variables:", {
+          apiKey: process.env.MAILGUN_API_KEY,
+          domain: process.env.MAILGUN_DOMAIN,
+          recipient: process.env.RECIPIENT_EMAIL_ADDRESS,
+        });
+
         const { name, email, message } = JSON.parse(event.body);
 
         const data = {
@@ -18,7 +24,11 @@ const mailgun = require('mailgun-js')({
           text: `Name: ${name}\nEmail: ${email}\nMessage: ${message}`,
         };
 
-        await mailgun.messages().send(data);
+        console.log("Mailgun Data:", data);
+
+        const mailgunResponse = await mailgun.messages().send(data);
+
+        console.log("Mailgun Response:", mailgunResponse);
 
         return {
           statusCode: 200,
@@ -28,7 +38,7 @@ const mailgun = require('mailgun-js')({
         console.error('Error sending email:', error);
         return {
           statusCode: 500,
-          body: JSON.stringify({ error: 'Failed to send email' }),
+          body: JSON.stringify({ error: 'Failed to send email', details: error.message }),
         };
       }
     };
