@@ -4,7 +4,9 @@ import React, { useState } from 'react';
 
     function Contact() {
       const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-      const [formData, setFormData] = useState({ name: '', email: '', message: '' });
+      const [name, setName] = useState('');
+      const [email, setEmail] = useState('');
+      const [message, setMessage] = useState('');
       const [formStatus, setFormStatus] = useState('');
 
       const toggleSidebar = () => {
@@ -18,17 +20,29 @@ import React, { useState } from 'react';
       const handleSubmit = async (e) => {
         e.preventDefault();
         setFormStatus('Sending...');
+
         try {
-          const response = await fetch('/.netlify/functions/sendEmail', {
+          const response = await fetch('/.netlify/functions/contact-form', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(formData),
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ name, email, message }),
           });
-          const result = await response.json();
-          setFormStatus(result.message || result.error);
-          setFormData({ name: '', email: '', message: '' });
+
+          if (response.ok) {
+            setFormStatus('Message sent successfully!');
+            setName('');
+            setEmail('');
+            setMessage('');
+          } else {
+            const errorData = await response.json();
+            console.error('Failed to send email:', errorData);
+            setFormStatus('Failed to send message. Please try again.');
+          }
         } catch (error) {
-          setFormStatus('Failed to send email');
+          console.error('Error sending email:', error);
+          setFormStatus('Failed to send message. Please try again.');
         }
       };
 
@@ -45,26 +59,9 @@ import React, { useState } from 'react';
             <div className="contact-form">
               <p>Please use the form below to contact us:</p>
               <form onSubmit={handleSubmit}>
-                <input
-                  type="text"
-                  placeholder="Name"
-                  value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  required
-                />
-                <input
-                  type="email"
-                  placeholder="Email"
-                  value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  required
-                />
-                <textarea
-                  placeholder="Message"
-                  value={formData.message}
-                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                  required
-                />
+                <input type="text" placeholder="Your Name" value={name} onChange={(e) => setName(e.target.value)} required />
+                <input type="email" placeholder="Your Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+                <textarea placeholder="Your Message" value={message} onChange={(e) => setMessage(e.target.value)} required></textarea>
                 <button type="submit">Send Message</button>
                 {formStatus && <p>{formStatus}</p>}
               </form>

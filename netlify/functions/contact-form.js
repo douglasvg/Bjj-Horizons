@@ -1,7 +1,7 @@
-const mailgun = require('mailgun-js')({
-      apiKey: process.env.MAILGUN_API_KEY,
-      domain: process.env.MAILGUN_DOMAIN,
-    });
+const Mailgun = require('mailgun.js');
+    const formData = require('form-data');
+
+    const mailgun = new Mailgun(formData);
 
     exports.handler = async (event) => {
       if (event.httpMethod !== 'POST') {
@@ -9,30 +9,26 @@ const mailgun = require('mailgun-js')({
       }
 
       try {
-        console.log("Environment Variables:", {
-          apiKey: process.env.MAILGUN_API_KEY,
-          domain: process.env.MAILGUN_DOMAIN,
-          recipient: process.env.RECIPIENT_EMAIL_ADDRESS,
+        const data = JSON.parse(event.body);
+        const { name, email, message } = data;
+
+        const mg = mailgun.client({
+          username: 'api',
+          key: process.env.MAILGUN_API_KEY,
         });
 
-        const { name, email, message } = JSON.parse(event.body);
+        const result = await mg.messages.create(process.env.MAILGUN_DOMAIN, {
+          from: `${name} <${email}>`,
+          to: [process.env.RECIPIENT_EMAIL_ADDRESS],
+          subject: 'New Contact Form Submission',
+          text: message,
+        });
 
-        const data = {
-          from: email,
-          to: process.env.RECIPIENT_EMAIL_ADDRESS,
-          subject: `New Contact Form Submission from ${name}`,
-          text: `Name: ${name}\nEmail: ${email}\nMessage: ${message}`,
-        };
-
-        console.log("Mailgun Data:", data);
-
-        const mailgunResponse = await mailgun.messages().send(data);
-
-        console.log("Mailgun Response:", mailgunResponse);
+        console.log("Mailgun Response:", result);
 
         return {
           statusCode: 200,
-          body: JSON.stringify({ message: 'Email sent successfully' }),
+          body: JSON.stringify({ message: 'Email sent!' }),
         };
       } catch (error) {
         console.error('Error sending email:', error);
