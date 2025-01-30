@@ -1,4 +1,4 @@
-		const Mailgun = require('mailgun.js');
+const Mailgun = require('mailgun-js');
     const formData = require('form-data');
     const mailgun = new Mailgun(formData);
 
