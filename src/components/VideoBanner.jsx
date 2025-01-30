@@ -3,9 +3,9 @@ import React, { useState, useEffect } from 'react';
 
     function VideoBanner({ video, onClose }) {
       const videoId = video.link.split('v=')[1];
+      const embedUrl = `https://www.youtube.com/embed/${videoId}?enablejsapi=1&origin=http://localhost`;
       const [description, setDescription] = useState('');
       const [showFullDescription, setShowFullDescription] = useState(false);
-      const [thumbnailUrl, setThumbnailUrl] = useState('');
 
       useEffect(() => {
         const fetchVideoDetails = async () => {
@@ -18,7 +18,6 @@ import React, { useState, useEffect } from 'react';
             const data = await response.json();
             if (data.items && data.items.length > 0) {
               setDescription(data.items[0].snippet.description);
-              setThumbnailUrl(data.items[0].snippet.thumbnails.high.url);
             }
           } catch (error) {
             console.error('Error fetching video details:', error);
@@ -46,14 +45,15 @@ import React, { useState, useEffect } from 'react';
             <button className="close-banner-button" onClick={onClose}>
               ✕
             </button>
-            {thumbnailUrl && (
-              <div className="video-thumbnail-container">
-                <img src={thumbnailUrl} alt="Video Thumbnail" className="banner-thumbnail" />
-                <a href={video.link} target="_blank" rel="noopener noreferrer">
-                  <button className="watch-on-youtube-button">Watch on YouTube</button>
-                </a>
-              </div>
-            )}
+            <div className="video-player">
+              <iframe
+                src={embedUrl}
+                title="YouTube video player"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen
+              ></iframe>
+            </div>
             <div className="video-details">
               <h2>{video.title}</h2>
               <p>Creator: {video.creator}</p>
