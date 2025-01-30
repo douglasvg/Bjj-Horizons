@@ -1,7 +1,7 @@
-const Mailgun = require('mailgun.js');
-    const formData = require('form-data');
-
-    const mailgun = new Mailgun(formData);
+const mailgun = require('mailgun-js')({
+      apiKey: process.env.MAILGUN_API_KEY,
+      domain: process.env.MAILGUN_DOMAIN,
+    });
 
     exports.handler = async (event) => {
       if (event.httpMethod !== 'POST') {
@@ -12,19 +12,16 @@ const Mailgun = require('mailgun.js');
         const data = JSON.parse(event.body);
         const { name, email, message } = data;
 
-        const mg = mailgun.client({
-          username: 'api',
-          key: process.env.MAILGUN_API_KEY,
-        });
-
-        const result = await mg.messages.create(process.env.MAILGUN_DOMAIN, {
+        const mailgunData = {
           from: `${name} <${email}>`,
-          to: [process.env.RECIPIENT_EMAIL_ADDRESS],
+          to: process.env.RECIPIENT_EMAIL_ADDRESS,
           subject: 'New Contact Form Submission',
           text: message,
-        });
+        };
 
-        console.log("Mailgun Response:", result);
+        const mailgunResponse = await mailgun.messages().send(mailgunData);
+
+        console.log("Mailgun Response:", mailgunResponse);
 
         return {
           statusCode: 200,
