@@ -1,18 +1,38 @@
 import React, { useEffect, useState } from 'react';
 
     function VideoThumbnail({ video, onVideoSelect }) {
-      console.log("VideoThumbnail rendering with video:", video);
-      const [title, setTitle] = useState(video?.title || 'Untitled Video');
-      const [creator, setCreator] = useState(video?.creator || 'Unknown Creator');
-      const videoId = video?.link?.split('v=')[1];
-      const thumbnailUrl = videoId ? `https://img.youtube.com/vi/${videoId}/0.jpg` : '';
+      const [title, setTitle] = useState(video.title || 'Untitled Video');
+      const [creator, setCreator] = useState(video.creator || 'Unknown Creator');
+      const [videoId, setVideoId] = useState('');
+      const [thumbnailUrl, setThumbnailUrl] = useState('');
 
       useEffect(() => {
-        if (!videoId) {
-          console.error("Invalid video link:", video?.link);
-          return;
+        const extractVideoId = (url) => {
+          try {
+            const parsedUrl = new URL(url);
+            if (parsedUrl.hostname === 'youtu.be') {
+              return parsedUrl.pathname.substring(1);
+            } else if (parsedUrl.hostname === 'www.youtube.com') {
+              const urlParams = new URLSearchParams(parsedUrl.search);
+              return urlParams.get('v');
+            }
+          } catch (e) {
+            console.error("Error parsing URL:", e);
+            return null;
+          }
+          return null;
+        };
+
+        const extractedId = extractVideoId(video.link);
+        setVideoId(extractedId);
+        if (extractedId) {
+          setThumbnailUrl(`https://img.youtube.com/vi/${extractedId}/0.jpg`);
         }
+      }, [video.link]);
+
+      useEffect(() => {
         const fetchVideoDetails = async () => {
+          if (!videoId) return;
           try {
             const apiKey = 'AIzaSyBqxY4etLph6cA_Ac4tun2-DIaL1p5qPWQ';
             const response = await fetch(`https://www.googleapis.com/youtube/v3/videos?id=${videoId}&key=${apiKey}&part=snippet`);

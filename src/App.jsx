@@ -1,15 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
     import Sidebar from './components/Sidebar';
     import VideoGrid from './components/VideoGrid';
     import Toggle from './components/Toggle';
     import VideoBanner from './components/VideoBanner';
+    import VideoFormModal from './components/VideoFormModal';
     import './App.css';
 
     function App() {
-      const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+      const [isSidebarOpen, setIsSidebarOpen] = useState(window.innerWidth >= 769);
       const [filter, setFilter] = useState(null);
       const [uniformFilter, setUniformFilter] = useState('Gi');
       const [selectedVideo, setSelectedVideo] = useState(null);
+      const [isFormModalOpen, setIsFormModalOpen] = useState(false);
       const [searchTerm, setSearchTerm] = useState('');
 
       const toggleSidebar = () => {
@@ -18,6 +20,14 @@ import React, { useState } from 'react';
 
       const handleVideoSelect = (video) => {
         setSelectedVideo(video);
+      };
+
+      const handleOpenFormModal = () => {
+        setIsFormModalOpen(true);
+      };
+
+      const handleCloseFormModal = () => {
+        setIsFormModalOpen(false);
       };
 
       return (
@@ -33,6 +43,7 @@ import React, { useState } from 'react';
               <h1>Brazilian Jiu Jitsu Moves Platform</h1>
               <div className="toggle-and-add-container">
                 <Toggle filter={uniformFilter} setFilter={setUniformFilter} />
+                <button className="add-video-button" onClick={handleOpenFormModal}>Add Video</button>
               </div>
               {selectedVideo && <VideoBanner video={selectedVideo} onClose={() => setSelectedVideo(null)} />}
               <input
@@ -44,6 +55,7 @@ import React, { useState } from 'react';
               />
             </div>
             <VideoGrid filter={filter} uniformFilter={uniformFilter} onVideoSelect={handleVideoSelect} searchTerm={searchTerm} />
+            {isFormModalOpen && <VideoFormModal onClose={handleCloseFormModal} />}
           </div>
           <footer className="app-footer">
             <p>Videos featured on this site are sourced from YouTube and comply with YouTube's Terms of Service and API policies. This site does not claim ownership of the videos. If you have concerns or wish to request removal, please contact us.</p>

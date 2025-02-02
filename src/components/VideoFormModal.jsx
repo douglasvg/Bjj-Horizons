@@ -22,22 +22,24 @@ import React, { useState, useEffect } from 'react';
         "Guard Control",
       ];
 
-      const allPositions = {
-        "Guard Pass": ["All", "Closed Guard", "De La Riva Guard", "Half Guard", "Lasso Guard", "50/50 Guard", "Butterfly Guard", "Reverse De La Riva Guard", "Spider Guard", "Waiter Guard", "Worm Guard", "X Guard", "Not Specific"],
-        "Takedown": ["Stand Up"],
-        "Guard Pull": ["All", "Closed Guard", "De La Riva Guard", "Half Guard", "Lasso Guard", "50/50 Guard", "Butterfly Guard", "Reverse De La Riva Guard", "Spider Guard", "Waiter Guard", "Worm Guard", "X Guard", "Not Specific"],
-        "Submission": ["All", "50/50 Guard", "Back Control", "Butterfly Guard", "Closed Guard", "De La Riva Guard", "Half Guard", "Lasso Guard", "Mount", "Reverse De La Riva Guard", "Side Control", "Spider Guard", "Stand Up", "Waiter Guard", "Worm Guard", "X Guard", "Not Specific"],
-        "Sweep": ["All", "50/50 Guard", "Back Control", "Butterfly Guard", "Closed Guard", "De La Riva Guard", "Half Guard", "Lasso Guard", "Mount", "Reverse De La Riva Guard", "Side Control", "Spider Guard", "Stand Up", "Waiter Guard", "Worm Guard", "X Guard", "Not Specific"],
-        "Defense / Escape": ["All", "Back Control", "Butterfly Guard", "Closed Guard", "De La Riva Guard", "Half Guard", "Lasso Guard", "50/50 Guard", "Mount", "Reverse De La Riva Guard", "Side Control", "Spider Guard", "Stand Up", "Guard Retention", "Mount Escape", "Back Escape", "Side Control Escape", "Not Specific"],
-        "Guard Control": ["All", "Closed Guard", "De La Riva Guard", "Half Guard", "Lasso Guard", "50/50 Guard", "Butterfly Guard", "Reverse De La Riva Guard", "Spider Guard", "Waiter Guard", "Worm Guard", "X Guard", "Not Specific"],
-      };
-
-      const [positions, setPositions] = useState(allPositions["Guard Pass"]);
-
-      useEffect(() => {
-        setPositions(allPositions[situation] || []);
-        setPosition('');
-      }, [situation]);
+      const positions = [
+        "Not Specific",
+        "Stand Up",
+        "Closed Guard",
+        "De La Riva Guard",
+        "Reverse De La Riva Guard",
+        "Half Guard",
+        "X Guard",
+        "Spider Guard",
+        "Lasso Guard",
+        "50/50 Guard",
+        "Butterfly Guard",
+        "Worm Guard",
+        "Waiter Guard",
+        "Mount",
+        "Back Control",
+        "Side Control",
+      ];
 
       const extractVideoId = (url) => {
         try {
@@ -73,9 +75,7 @@ import React, { useState, useEffect } from 'react';
           const apiKey = 'AIzaSyBqxY4etLph6cA_Ac4tun2-DIaL1p5qPWQ';
           const response = await fetch(`https://www.googleapis.com/youtube/v3/videos?id=${videoId}&key=${apiKey}&part=snippet`);
           if (!response.ok) {
-            const responseText = await response.text();
-            console.error("YouTube API Error:", response.status, responseText);
-            throw new Error(`HTTP error! Status: ${response.status}, ${responseText}`);
+            throw new Error(`HTTP error! Status: ${response.status}`);
           }
           const data = await response.json();
           if (data.items && data.items.length > 0) {
@@ -126,8 +126,6 @@ import React, { useState, useEffect } from 'react';
             },
             body: JSON.stringify(newVideo),
           });
-
-          console.log("Supabase API Response:", response);
 
           if (!response.ok) {
             const responseText = await response.text();

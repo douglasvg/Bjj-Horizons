@@ -1,13 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
     import Sidebar from './Sidebar';
     import './Contact.css';
 
     function Contact() {
-      const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-      const [name, setName] = useState('');
-      const [email, setEmail] = useState('');
-      const [message, setMessage] = useState('');
-      const [formStatus, setFormStatus] = useState('');
+      const [isSidebarOpen, setIsSidebarOpen] = useState(window.innerWidth >= 769);
+
+      useEffect(() => {
+        const handleResize = () => {
+          setIsSidebarOpen(window.innerWidth >= 769);
+        };
+
+        handleResize();
+        window.addEventListener('resize', handleResize);
+
+        return () => window.removeEventListener('resize', handleResize);
+      }, []);
 
       const toggleSidebar = () => {
         setIsSidebarOpen(!isSidebarOpen);
@@ -17,55 +24,26 @@ import React, { useState } from 'react';
         // Dummy function to prevent errors
       };
 
-      const handleSubmit = async (e) => {
-        e.preventDefault();
-        setFormStatus('Sending...');
-
-        try {
-          const response = await fetch('/.netlify/functions/contact-form', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ name, email, message }),
-          });
-
-          if (response.ok) {
-            setFormStatus('Message sent successfully!');
-            setName('');
-            setEmail('');
-            setMessage('');
-          } else {
-            const errorData = await response.json();
-            console.error('Failed to send email:', errorData);
-            setFormStatus('Failed to send message. Please try again.');
-          }
-        } catch (error) {
-          console.error('Error sending email:', error);
-          setFormStatus('Failed to send message. Please try again.');
-        }
-      };
-
       return (
         <div className="app-container">
-          <button className={`burger-icon ${isSidebarOpen ? 'close' : ''}`} onClick={toggleSidebar}>
-            {isSidebarOpen ? '✕' : '☰'}
-          </button>
-          <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} setFilter={setFilter} />
+          {!isSidebarOpen && (
+            <button className="burger-icon" onClick={toggleSidebar}>
+              ☰
+            </button>
+          )}
+          <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} setFilter={setFilter} showCategories={false} />
           <div className={`content-area ${isSidebarOpen ? 'sidebar-open' : ''}`}>
             <div className="content-header">
               <h1>Contact Us</h1>
             </div>
             <div className="contact-form">
               <p>Please use the form below to contact us:</p>
-              <form onSubmit={handleSubmit}>
-                <input type="text" placeholder="Your Name" value={name} onChange={(e) => setName(e.target.value)} required />
-                <input type="email" placeholder="Your Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-                <textarea placeholder="Your Message" value={message} onChange={(e) => setMessage(e.target.value)} required></textarea>
+              <form>
+                <input type="text" placeholder="Your Name" />
+                <input type="email" placeholder="Your Email" />
+                <textarea placeholder="Your Message"></textarea>
                 <button type="submit">Send Message</button>
-                {formStatus && <p>{formStatus}</p>}
               </form>
-              <p className="contact-email-message">Or send an email directly to contact@bjjhorizons.com</p>
             </div>
           </div>
           <footer className="app-footer">

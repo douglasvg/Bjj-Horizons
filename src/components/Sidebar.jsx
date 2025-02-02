@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
     import './Sidebar.css';
 
-    function Sidebar({ isOpen, toggleSidebar, setFilter }) {
+    function Sidebar({ isOpen, toggleSidebar, setFilter, showCategories = true }) {
       const [activeCategory, setActiveCategory] = useState(null);
 
       const categories = [
@@ -62,39 +62,43 @@ import React, { useState } from 'react';
               <li><a href="/faq">FAQ</a></li>
             </ul>
             <hr className="sidebar-separator" />
-            <h2 className="sidebar-title">BJJ Techniques</h2>
-            <ul>
-              {categories.map((category) => (
-                <li key={category.name} className="category">
-                  <div
-                    className={`category-title ${activeCategory === category.name ? 'active' : ''}`}
-                    onClick={() => handleCategoryClick(category.name)}
-                  >
-                    {category.name}
-                  </div>
-                  {activeCategory === category.name && (
-                    <ul className="subcategories">
-                      {category.subcategories.sort((a, b) => {
-                        if (a === "All") return -1;
-                        if (b === "All") return 1;
-                        if (a === "Not Specific") return 1;
-                        if (b === "Not Specific") return -1;
-                        return a.localeCompare(b);
-                      }).map((subcategory) => (
-                        <li key={subcategory}>
-                          <a
-                            href={`#${subcategory}`}
-                            onClick={() => handleSubcategoryClick(category.name, subcategory)}
-                          >
-                            {subcategory}
-                          </a>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </li>
-              ))}
-            </ul>
+            {showCategories && (
+              <>
+                <h2 className="sidebar-title">BJJ Techniques</h2>
+                <ul>
+                  {categories.map((category) => (
+                    <li key={category.name} className="category">
+                      <div
+                        className={`category-title ${activeCategory === category.name ? 'active' : ''}`}
+                        onClick={() => handleCategoryClick(category.name)}
+                      >
+                        {category.name}
+                      </div>
+                      {activeCategory === category.name && (
+                        <ul className="subcategories">
+                          {category.subcategories.sort((a, b) => {
+                            if (a === "All") return -1;
+                            if (b === "All") return 1;
+                            if (a === "Not Specific") return 1;
+                            if (b === "Not Specific") return -1;
+                            return a.localeCompare(b);
+                          }).map((subcategory) => (
+                            <li key={subcategory}>
+                              <a
+                                href={`#${subcategory}`}
+                                onClick={() => handleSubcategoryClick(category.name, subcategory)}
+                              >
+                                {subcategory}
+                              </a>
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              </>
+            )}
           </nav>
         </div>
       );

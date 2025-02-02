@@ -1,13 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
     import './FAQ.css';
     import Sidebar from './Sidebar';
 
     function FAQ() {
       const [openAnswer, setOpenAnswer] = useState(null);
-      const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+      const [isSidebarOpen, setIsSidebarOpen] = useState(window.innerWidth >= 769);
+
+      useEffect(() => {
+        const handleResize = () => {
+          setIsSidebarOpen(window.innerWidth >= 769);
+        };
+
+        handleResize();
+        window.addEventListener('resize', handleResize);
+
+        return () => window.removeEventListener('resize', handleResize);
+      }, []);
 
       const toggleSidebar = () => {
         setIsSidebarOpen(!isSidebarOpen);
+      };
+
+      const setFilter = () => {
+        // Dummy function to prevent errors
       };
 
       const faqItems = [
@@ -113,10 +128,12 @@ import React, { useState } from 'react';
 
       return (
         <div className="app-container">
-          <button className={`burger-icon ${isSidebarOpen ? 'close' : ''}`} onClick={toggleSidebar}>
-            {isSidebarOpen ? '✕' : '☰'}
-          </button>
-          <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
+          {!isSidebarOpen && (
+            <button className="burger-icon" onClick={toggleSidebar}>
+              ☰
+            </button>
+          )}
+          <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} setFilter={setFilter} showCategories={false} />
           <div className={`content-area ${isSidebarOpen ? 'sidebar-open' : ''}`}>
             <div className="content-header">
               <h1>FAQ</h1>
