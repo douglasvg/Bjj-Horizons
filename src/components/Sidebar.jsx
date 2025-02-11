@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
     import './Sidebar.css';
 
-    function Sidebar({ isOpen, toggleSidebar, setFilter, showCategories = true }) {
+    function Sidebar({ isOpen, toggleSidebar, setFilter }) {
       const [activeCategory, setActiveCategory] = useState(null);
 
       const categories = [
@@ -23,7 +23,7 @@ import React, { useState } from 'react';
         },
         {
           name: "Sweep",
-          subcategories: ["All", "Back Control", "Butterfly Sweep", "De La Riva Sweep", "Flower Sweep", "Guard Retention", "Half Guard Sweep", "Hip Bump Sweep", "Mount", "Scissor Sweep", "Side Control", "X Guard Sweep", "Not Specific"],
+          subcategories: ["All", "Closed Guard", "De La Riva Guard", "Half Guard", "Lasso Guard", "50/50 Guard", "Butterfly Guard", "Reverse De La Riva Guard", "Spider Guard", "Waiter Guard", "Worm Guard", "X Guard", "Not Specific"],
         },
         {
           name: "Defense / Escape",
@@ -59,47 +59,44 @@ import React, { useState } from 'react';
             <ul className="sidebar-links">
               <li><a href="/">Home</a></li>
               <li><a href="/about">About Us</a></li>
-              <li><a href="/contact">Contact Us</a></li>
               <li><a href="/faq">FAQ</a></li>
+              <li><a href="/terms">Terms & Conditions</a></li>
+              <li><a href="/contact">Contact Us</a></li>
             </ul>
             <hr className="sidebar-separator" />
-            {showCategories && (
-              <>
-                <h2 className="sidebar-title">BJJ Techniques</h2>
-                <ul>
-                  {categories.map((category) => (
-                    <li key={category.name} className="category">
-                      <div
-                        className={`category-title ${activeCategory === category.name ? 'active' : ''}`}
-                        onClick={() => handleCategoryClick(category.name)}
-                      >
-                        {category.name}
-                      </div>
-                      {activeCategory === category.name && (
-                        <ul className="subcategories">
-                          {category.subcategories.sort((a, b) => {
-                            if (a === "All") return -1;
-                            if (b === "All") return 1;
-                            if (a === "Not Specific") return 1;
-                            if (b === "Not Specific") return -1;
-                            return a.localeCompare(b);
-                          }).map((subcategory) => (
-                            <li key={subcategory}>
-                              <a
-                                href={`#${subcategory}`}
-                                onClick={() => handleSubcategoryClick(category.name, subcategory)}
-                              >
-                                {subcategory}
-                              </a>
-                            </li>
-                          ))}
-                        </ul>
-                      )}
-                    </li>
-                  ))}
-                </ul>
-              </>
-            )}
+            <h2 className="sidebar-title">BJJ Techniques</h2>
+            <ul>
+              {categories.map((category) => (
+                <li key={category.name} className="category">
+                  <div
+                    className={`category-title ${activeCategory === category.name ? 'active' : ''}`}
+                    onClick={() => handleCategoryClick(category.name)}
+                  >
+                    {category.name}
+                  </div>
+                  {activeCategory === category.name && (
+                    <ul className="subcategories">
+                      {category.subcategories.sort((a, b) => {
+                        if (a === "All") return -1;
+                        if (b === "All") return 1;
+                        if (a === "Not Specific") return 1;
+                        if (b === "Not Specific") return -1;
+                        return a.localeCompare(b);
+                      }).map((subcategory) => (
+                        <li key={subcategory}>
+                          <a
+                            href={`#${subcategory}`}
+                            onClick={() => handleSubcategoryClick(category.name, subcategory)}
+                          >
+                            {subcategory}
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </li>
+              ))}
+            </ul>
           </nav>
         </div>
       );
