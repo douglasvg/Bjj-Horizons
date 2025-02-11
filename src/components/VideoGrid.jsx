@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from 'react';
     import VideoThumbnail from './VideoThumbnail';
+    import './VideoGrid.css';
 
     function VideoGrid({ filter, uniformFilter, onVideoSelect, searchTerm }) {
       const [videos, setVideos] = useState([]);
+      const [currentPage, setCurrentPage] = useState(1);
+      const videosPerPage = 20;
 
       useEffect(() => {
         const fetchVideos = async () => {
@@ -26,6 +29,9 @@ import React, { useEffect, useState } from 'react';
               query += `name=ilike.*${searchTerm}*&`;
             }
 
+            const startIndex = (currentPage - 1) * videosPerPage;
+            query += `limit=${videosPerPage}&offset=${startIndex}`;
+
             const response = await fetch(query, {
               headers: {
                 'apikey': supabaseKey,
@@ -48,13 +54,35 @@ import React, { useEffect, useState } from 'react';
         };
 
         fetchVideos();
-      }, [filter, uniformFilter, searchTerm]);
+      }, [filter, uniformFilter, searchTerm, currentPage]);
+
+      const handlePrevPage = () => {
+        if (currentPage > 1) {
+          setCurrentPage(currentPage - 1);
+        }
+      };
+
+      const handleNextPage = () => {
+        if (videos.length === videosPerPage) {
+          setCurrentPage(currentPage + 1);
+        }
+      };
 
       return (
-        <div className="video-grid">
-          {videos.map(video => (
-            <VideoThumbnail key={video.id} video={video} onVideoSelect={onVideoSelect} />
-          ))}
+        <div>
+          <div className="video-grid">
+            {videos.map(video => (
+              <VideoThumbnail key={video.id} video={video} onVideoSelect={onVideoSelect} />
+            ))}
+          </div>
+          <div className="pagination-controls">
+            <button onClick={handlePrevPage} disabled={currentPage === 1}>
+              &lt;
+            </button>
+            <button onClick={handleNextPage} disabled={videos.length < videosPerPage}>
+              &gt;
+            </button>
+          </div>
         </div>
       );
     }

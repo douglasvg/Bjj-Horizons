@@ -119,4 +119,8 @@
       .sidebar {
         width: 200px;
       }
+
+      .sidebar-title {
+        font-size: 1.1em;
+      }
     }

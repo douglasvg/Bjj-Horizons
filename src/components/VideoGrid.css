@@ -1,0 +1,72 @@
+.video-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(20vw, 1fr));
+      gap: 20px;
+      padding: 20px;
+    }
+
+    .video-thumbnail {
+      position: relative;
+      overflow: hidden;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+      transition: transform 0.3s;
+    }
+
+    .video-thumbnail:hover {
+      transform: scale(1.05);
+    }
+
+    .video-thumbnail img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .video-info {
+      background: rgba(0, 0, 0, 0.8);
+      color: #ffffff;
+      padding: 10px;
+      text-align: center;
+    }
+
+    .video-title {
+      font-size: 16px;
+      margin-bottom: 5px;
+    }
+
+    .video-creator {
+      font-size: 14px;
+      color: #ccc;
+    }
+
+    .pagination-controls {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+    }
+
+    .pagination-controls button {
+      background-color: #4caf50;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 4px;
+      margin: 0 5px;
+    }
+
+    .pagination-controls button:disabled {
+      background-color: #777;
+      cursor: not-allowed;
+    }
+
+    @media (max-width: 768px) {
+      .video-grid {
+        grid-template-columns: repeat(auto-fill, minmax(50vw, 1fr));
+      }
+    }
