@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
     import Sidebar from './components/Sidebar';
     import VideoGrid from './components/VideoGrid';
     import Toggle from './components/Toggle';
@@ -7,7 +7,7 @@ import React, { useState } from 'react';
     import './App.css';
 
     function App() {
-      const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+      const [isSidebarOpen, setIsSidebarOpen] = useState(window.innerWidth >= 769);
       const [filter, setFilter] = useState(null);
       const [uniformFilter, setUniformFilter] = useState('Gi');
       const [selectedVideo, setSelectedVideo] = useState(null);
