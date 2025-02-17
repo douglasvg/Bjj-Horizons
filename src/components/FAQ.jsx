@@ -1,28 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
     import './FAQ.css';
     import Sidebar from './Sidebar';
 
     function FAQ() {
       const [openAnswer, setOpenAnswer] = useState(null);
-      const [isSidebarOpen, setIsSidebarOpen] = useState(window.innerWidth >= 769);
-
-      useEffect(() => {
-        const handleResize = () => {
-          setIsSidebarOpen(window.innerWidth >= 769);
-        };
-
-        handleResize();
-        window.addEventListener('resize', handleResize);
-
-        return () => window.removeEventListener('resize', handleResize);
-      }, []);
+      const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
       const toggleSidebar = () => {
         setIsSidebarOpen(!isSidebarOpen);
-      };
-
-      const setFilter = () => {
-        // Dummy function to prevent errors
       };
 
       const faqItems = [
@@ -120,6 +105,39 @@ import React, { useState, useEffect } from 'react';
             <li><b>Stay updated:</b> Check the IBJJF website for the latest rules and qualification criteria.</li>
           </ol>`,
         },
+        {
+          question: "What is the true origin of Jiu-Jitsu?",
+          answer: `The Origin of Jiu-Jitsu dates back to ancient Japan, where samurai warriors developed grappling techniques to fight in armor, leading to the creation of traditional Japanese Jiu-Jitsu. Over time, these techniques evolved, influencing Judo and other martial arts. In the early 1900s, Mitsuyo Maeda, a Japanese master of Jiu-Jitsu, introduced the art to Brazil, where it was further developed by the Gracie family.
+
+          Brazilian Jiu-Jitsu (BJJ) refined the focus on ground combat, leverage, and submissions, making it distinct from its Japanese predecessor. Today, practitioners study a variety of Jiujitsu moves such as sweeps, submissions, and escapes to gain positional control and victory. Whether for self-defense or competition, learning effective Jiu-Jitsu moves is key to mastering the art.`,
+        },
+        {
+          question: "What is the belt ranking in BJJ?",
+          answer: `The Jiu-Jitsu belt ranking system represents a practitioner's progression and skill level in Brazilian Jiu-Jitsu. Unlike some martial arts, BJJ has a rigorous ranking process, and belts are earned through consistent training, technical knowledge, and live sparring ability.
+
+          The Jiu-Jitsu belt ranks for adults are:
+          <ul>
+            <li>White Belt – The beginner level, where students learn fundamental positions and Jiu-Jitsu moves like escapes and sweeps.</li>
+            <li>Blue Belt – Focuses on refining techniques, defense, and strategy.</li>
+            <li>Purple Belt – A more advanced level where practitioners develop their own style and improve submissions.</li>
+            <li>Brown Belt – Near mastery, with strong positional control and detailed understanding of techniques.</li>
+            <li>Black Belt – The expert level, where practitioners have a deep understanding of Jiu-Jitsu moves and strategy.</li>
+            <li>Jiu-Jitsu Red Belt – Reserved for grandmasters who have dedicated their lives to the art, typically awarded after decades of study and contribution.</li>
+          </ul>
+
+          For children, the Jiu-Jitsu belt levels include additional colors like yellow, orange, and green before transitioning to the adult ranking system.`,
+        },
+        {
+          question: "What is the difference between Judo and BJJ (Jiu-Jitsu)?",
+          answer: `Judo and Jiu-Jitsu share a common origin but have evolved into distinct martial arts with different focuses.
+
+          <ul>
+            <li>Judo emphasizes throws and takedowns, with the goal of bringing an opponent to the ground using powerful sweeps and trips. It was developed in Japan by Jigoro Kano, who refined traditional Jiu-Jitsu techniques into a structured sport.</li>
+            <li>Brazilian Jiu-Jitsu (BJJ) places a greater focus on ground fighting, submissions, and positional control. It evolved from Judo after Mitsuyo Maeda introduced it to Brazil, where it was further developed into a system of sweeps, escapes, and submissions.</li>
+          </ul>
+
+          While both arts use similar Jiu-Jitsu moves, Judo practitioners aim to win by throwing their opponents, while BJJ practitioners focus on grappling and submissions once the fight goes to the ground. Both martial arts are highly effective for self-defense and competition, but the choice between them depends on whether you prefer stand-up throws or ground-based strategy.`,
+        },
       ];
 
       const toggleAnswer = (index) => {
@@ -128,12 +146,10 @@ import React, { useState, useEffect } from 'react';
 
       return (
         <div className="app-container">
-          {!isSidebarOpen && (
-            <button className="burger-icon" onClick={toggleSidebar}>
-              ☰
-            </button>
-          )}
-          <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} setFilter={setFilter} showCategories={false} />
+          <button className={`burger-icon ${isSidebarOpen ? 'close' : ''}`} onClick={toggleSidebar}>
+            {isSidebarOpen ? '✕' : '☰'}
+          </button>
+          <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
           <div className={`content-area ${isSidebarOpen ? 'sidebar-open' : ''}`}>
             <div className="content-header">
               <h1>FAQ</h1>
@@ -141,18 +157,24 @@ import React, { useState, useEffect } from 'react';
             <div className="faq-container">
               {faqItems.map((item, index) => (
                 <div key={index} className="faq-item">
-                  <div
+                  <h2
                     className={`faq-question ${openAnswer === index ? 'open' : ''}`}
                     onClick={() => toggleAnswer(index)}
                   >
                     {item.question}
-                  </div>
+                  </h2>
                   {openAnswer === index && (
                     <div className="faq-answer" dangerouslySetInnerHTML={{ __html: item.answer }}>
                     </div>
                   )}
                 </div>
               ))}
+              <div className="support-section">
+                <p>Still have questions? Contact our support</p>
+                <a href="/contact">
+                  <button className="support-button">Contact Support</button>
+                </a>
+              </div>
             </div>
           </div>
           <footer className="app-footer">

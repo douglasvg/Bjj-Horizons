@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
     import Sidebar from './components/Sidebar';
     import VideoGrid from './components/VideoGrid';
     import Toggle from './components/Toggle';
@@ -7,7 +7,7 @@ import React, { useEffect, useState } from 'react';
     import './App.css';
 
     function App() {
-      const [isSidebarOpen, setIsSidebarOpen] = useState(window.innerWidth >= 769);
+      const [isSidebarOpen, setIsSidebarOpen] = useState(false);
       const [filter, setFilter] = useState(null);
       const [uniformFilter, setUniformFilter] = useState('Gi');
       const [selectedVideo, setSelectedVideo] = useState(null);
@@ -41,7 +41,7 @@ import React, { useEffect, useState } from 'react';
           <div className={`content-area ${isSidebarOpen ? 'sidebar-open' : ''}`}>
             <div className="content-header">
               <h1>Brazilian Jiu Jitsu Moves Platform</h1>
-              <p className="subtitle">A curated repository of free brazilian jiu jitsu moves instructional to help you improve your game</p>
+              <h2 className="subtitle">A curated repository of free brazilian jiu jitsu moves instructional to help you improve your game</h2>
               <div className="toggle-and-add-container">
                 <Toggle filter={uniformFilter} setFilter={setUniformFilter} />
               </div>
